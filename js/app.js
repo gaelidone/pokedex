@@ -1,85 +1,83 @@
 const btnTipos = document.querySelectorAll('.btn-header');   
 const listaPok = document.querySelector('#listaPokemon');
+let paginaCargada = false
 
-
-let URL = "https://pokeapi.co/api/v2/pokemon?limit=100&offset=0";
-
-// fetch(URL)
-//    .then(response => response.json())
-//    .then(data => fetch(data.results[12].url))
-//    .then(response => response.json())
-//    .then(data => {
-//       console.log(data)
-//    })
-//    .catch(error => console.log(error))
-
-
-
-
-let arrayPromesas = [];
-todosLosPokemones()
-
+let URL = "https://pokeapi.co/api/v2/pokemon?limit=9&offset=0";
+let arrayObjectAllPokemons = [];
 
 
 /*TODOS LOS POKEMONES */
-function todosLosPokemones() {
-   fetch(URL)
-   .then(response => response.json())
-   .then(data => {
-      let arrayPokemones = data.results
-
-
-      arrayPokemones.forEach(pokemon => {
-         arrayPromesas.push(fetch(pokemon.url).then(response => response.json()));
+async function cargarPokemons() {
+   try {
+      const response = await fetch(URL)
+      const data = await response.json()
+      const arrayPok = data.results
+      const arrayPromesas = arrayPok.map(Pok => {
+         return fetch(Pok.url).then(res => res.json())
       });
-      return Promise.all(arrayPromesas)
-   })
-   .then(arrayDatos => arrayDatos.forEach(data => {
-      crearPokemon(data)
-   }))
-   .catch(error => console.log(error))
+      const arrayDatos = await Promise.all(arrayPromesas)
+      arrayDatos.forEach(obj => {
+         arrayObjectAllPokemons.push(obj);
+         if (paginaCargada === false) {
+            crearPokemon(obj)
+         }
+      });
+      paginaCargada = true;
+
+
+   } catch (error) {
+      console.log(error)
+   }
 }
+cargarPokemons()
 /***************************************/
 
 
 
-
 /* POKEMONES FILTRADOS */
-function tipoPokemones(tipo) {
-   listaPok.innerHTML = "";
-   fetch(URL)
-   .then(response => response.json())
-   .then(data => {
-      arrayPromesas = [];
-      let allPokemons = data.results
-      allPokemons.forEach(pok => {
-         arrayPromesas.push(fetch(pok.url).then(res => res.json()))
-      })
-      return Promise.all(arrayPromesas)
-   })
-   .then(dataArr => {
-      dataArr.forEach(objPokemon => {
-         let tipos = returnType(objPokemon)
-         tipos.forEach(type => {
-            if (type === tipo) {
-               crearPokemon(objPokemon)
-            }else{
-               todosLosPokemones()
-            }
-         });
-      });
-   })
-
-   .catch(error => console.log("ERROR EN EL SISTEMA: " + error))
+function filtrarPokemons(tipo, array) {
+   const pokemonsFiltrados = []
+   array.forEach(pok => {
+      let tiposPok = returnType(pok)
+      if (tiposPok[0] === tipo || tiposPok[1] === tipo) {
+         pokemonsFiltrados.push(pok)
+      }
+   });
+   return pokemonsFiltrados
 }
 
 btnTipos.forEach(tipoBtn => {
    tipoBtn.addEventListener('click', () =>{
-      let idTipo = tipoBtn.id
-      tipoPokemones(idTipo)
+      let idTipo = tipoBtn.id;
+      let verificacion = tipoBtn.classList.contains('active')
+
+      if (verificacion === false) {
+         borrarClassActive()
+         tipoBtn.classList.add('active')
+
+         if (idTipo === "ver-todos") {
+            listaPok.innerHTML = ""
+            arrayObjectAllPokemons.forEach(pok => crearPokemon(pok));
+
+         }else{
+            const pokFiltrados = filtrarPokemons(idTipo, arrayObjectAllPokemons)
+            if (pokFiltrados.length !== 0) {
+               listaPok.innerHTML = ""
+               pokFiltrados.forEach(pok => crearPokemon(pok));
+            }else{
+               listaPok.innerHTML = ""
+            }
+         }
+      }
+
+
    })
 });
-/********************************************/
+
+function borrarClassActive() {
+   btnTipos.forEach(tipoBtn => tipoBtn.classList.remove('active'))
+}
+// /********************************************/
 
 
 
