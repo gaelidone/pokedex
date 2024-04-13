@@ -5,6 +5,8 @@ const blurBack = document.querySelector('.blurLarge');
 
 document.body.addEventListener('click', (e) =>{
    if (e.target && e.target.classList.contains('back-detail_click')) {
+      let blur = document.querySelector('.blurLarge');
+      blur.classList.toggle('hidden')
       const target = e.target;
       const name = target.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.lastElementChild.textContent;
       const pokClick = devolverObj(arrayObjectAllPokemons, name)
@@ -17,7 +19,7 @@ document.body.addEventListener('click', (e) =>{
 document.body.addEventListener('click', (e) =>{
    if ((e.target && e.target.id === "x") || (e.target && e.target.id === "blur")) {
       const blur = document.querySelector('#blur');
-      blur.classList.add('hidden');
+      blur.classList.toggle('hidden');
       const cardPok = document.querySelector('.cardPokemon');
       cardPok.remove()
    }
@@ -28,6 +30,7 @@ function crearCard(obj) {
    let namePok = (obj.name).toUpperCase();
    let idPok = returnId(obj.id);
    let imgPok = obj.sprites.other["official-artwork"].front_default;
+   // let imgPok = obj.sprites.versions["generation-v"]["black-white"].animated.front_default;
    let tiposPok = returnType(obj)
    let alturaPok = obj.height
    let pesoPok = obj.weight;
@@ -54,15 +57,22 @@ function crearCard(obj) {
    </div>
 </div>
 `
+   borderColor(tiposPok)
 }
 
 
 
 
 function devolverObj(array, nameCard) {
-   let namePok = nameCard.toLowerCase();
+   const namePok = nameCard.toLowerCase();
    const objDetail = array.find(obj => obj.name === namePok);
    return objDetail;
+}
+
+function borderColor(type) {
+   const card = document.querySelector('.cardPokemon');
+   console.log(card)
+   card.style.boxShadow = `0 0 20px 3px var(--type-${type[0]})`
 }
 //    <div class="cardPokemon">
 //       <i class="bi bi-x-circle"></i>

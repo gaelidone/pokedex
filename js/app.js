@@ -2,7 +2,7 @@ const btnTipos = document.querySelectorAll('.btn-header');
 const listaPok = document.querySelector('#listaPokemon');
 let paginaCargada = false
 
-let URL = "https://pokeapi.co/api/v2/pokemon?limit=9&offset=0";
+let URL = "https://pokeapi.co/api/v2/pokemon?limit=50&offset=0";
 let arrayObjectAllPokemons = [];
 
 
