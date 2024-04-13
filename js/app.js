@@ -92,6 +92,7 @@ function crearPokemon(obj) {
    let cardPok
    if (tiposPok.length === 1) {
       cardPok = `<div class="pokemon">
+      <div class="back-detail_click"></div>
       <p class="pokemon-id-back">#${idPok}</p>
       <div class="pokemon-img">
          <img src="${imgPok}" alt="">
@@ -112,6 +113,7 @@ function crearPokemon(obj) {
    </div>`
    }else{
       cardPok = `<div class="pokemon">
+      <div class="back-detail_click"></div>
       <p class="pokemon-id-back">#${idPok}</p>
       <div class="pokemon-img">
          <img src="${imgPok}" alt="">
