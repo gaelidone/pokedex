@@ -2,7 +2,7 @@ const btnTipos = document.querySelectorAll('.btn-header');
 const listaPok = document.querySelector('#listaPokemon');
 let paginaCargada = false
 
-let URL = "https://pokeapi.co/api/v2/pokemon?limit=50&offset=0";
+let URL = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
 let arrayObjectAllPokemons = [];
 
 
@@ -50,7 +50,7 @@ btnTipos.forEach(tipoBtn => {
    tipoBtn.addEventListener('click', () =>{
       let idTipo = tipoBtn.id;
       let verificacion = tipoBtn.classList.contains('active')
-
+      console.log(idTipo)
       if (verificacion === false) {
          borrarClassActive()
          tipoBtn.classList.add('active')
@@ -135,7 +135,7 @@ function crearPokemon(obj) {
    </div>`
    }
 
-listaPok.innerHTML +=  cardPok
+listaPok.innerHTML +=  cardPok;
 }
 /********************************************************/
 

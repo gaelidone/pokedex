@@ -300,6 +300,9 @@ main .container{
   z-index: 3500;
   padding: 1em;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 .bi-x-circle{
   position: absolute;
@@ -316,10 +319,10 @@ main .container{
 .card-header{
   border-radius: 20px;
   width: 100%;
-  height: 25%;
+  height: 22.5%;
   display: flex;
   justify-content: space-between;
-  padding: 0 2em;
+  padding: 0 4em;
   align-items: center;
 }
 .card-header .stat{
@@ -335,6 +338,7 @@ main .container{
   width: auto;
   object-fit: cover;
   max-height: 150px;
+  margin-left: 1em;
 }
 .wrap-stat{
   display: flex;
@@ -348,9 +352,50 @@ main .container{
   height: 100%;
   width: min-content;
   object-fit: contain;
+  margin-left: 0;
 }
 .height{
   transform: scale(.8, .95);
+}
+
+
+/*main card*/
+.card-main__name{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5em;
+  color: white;
+}
+
+.card-main__tipos{
+  display: flex;
+  justify-content: center;
+  margin-top: .5em;
+  gap: .5em;
+}
+.card-main__tipos .tipo{
+  width: max-content;
+}
+
+/*section card*/
+.card-section{
+  display: flex;
+
+}
+.card-section__text{
+  width: 40%;
+}
+.card-section__text p{
+  background-color: #555;
+  padding: 1em;
+  border-radius: 0;
+  color: white;
+  border-radius: 20px;
+}
+.card-section__stats{
+  width: 60%;
+  text-align: end;
 }
 
 /**************************************************/
