@@ -1,4 +1,4 @@
-const btnTipos = document.querySelectorAll('.btn-header');   
+const btnTipos = document.querySelectorAll('.btn-header');
 const listaPok = document.querySelector('#listaPokemon');
 let paginaCargada = false
 
@@ -35,6 +35,63 @@ cargarPokemons()
 
 
 /* POKEMONES FILTRADOS */
+
+// btnTipos.forEach(tipoBtn => {
+//    tipoBtn.addEventListener('click', () =>{
+//       let idTipo = tipoBtn.id;
+//       let verificacion = tipoBtn.classList.contains('active')
+//       console.log(idTipo)
+//       if (verificacion === false) {
+//          borrarClassActive()
+//          tipoBtn.classList.add('active')
+
+//          if (idTipo === "ver-todos") {
+//             listaPok.innerHTML = ""
+//             arrayObjectAllPokemons.forEach(pok => crearPokemon(pok));
+
+//          }else{
+//             const pokFiltrados = filtrarPokemons(idTipo, arrayObjectAllPokemons)
+//             if (pokFiltrados.length !== 0) {
+//                listaPok.innerHTML = ""
+//                pokFiltrados.forEach(pok => crearPokemon(pok));
+//             }else{
+//                listaPok.innerHTML = ""
+//             }
+//          }
+//       }
+//    })
+// });
+
+
+function manejarClickBotonesHeader(e) {
+   if (e.target.classList.contains('btn-header')) {
+      const idTipo = e.target.id
+      let verificacion = e.target.classList.contains('active');
+      console.log(idTipo)
+      console.log(verificacion)
+      if (verificacion === false) {
+         borrarClassActive()
+         e.target.classList.add('active')
+
+         if (idTipo === "ver-todos") {
+            listaPok.innerHTML = "";
+            arrayObjectAllPokemons.forEach(pok => crearPokemon(pok));
+
+         } else {
+            const pokFiltrados = filtrarPokemons(idTipo, arrayObjectAllPokemons);
+            if (pokFiltrados.length !== 0) {
+               listaPok.innerHTML = "";
+               pokFiltrados.forEach(pok => crearPokemon(pok))
+            } else {
+               listaPok.innerHTML = "";
+            }
+         }
+      }
+   }
+}
+
+document.body.addEventListener('click', manejarClickBotonesHeader);
+
 function filtrarPokemons(tipo, array) {
    const pokemonsFiltrados = []
    array.forEach(pok => {
@@ -46,36 +103,9 @@ function filtrarPokemons(tipo, array) {
    return pokemonsFiltrados
 }
 
-btnTipos.forEach(tipoBtn => {
-   tipoBtn.addEventListener('click', () =>{
-      let idTipo = tipoBtn.id;
-      let verificacion = tipoBtn.classList.contains('active')
-      console.log(idTipo)
-      if (verificacion === false) {
-         borrarClassActive()
-         tipoBtn.classList.add('active')
-
-         if (idTipo === "ver-todos") {
-            listaPok.innerHTML = ""
-            arrayObjectAllPokemons.forEach(pok => crearPokemon(pok));
-
-         }else{
-            const pokFiltrados = filtrarPokemons(idTipo, arrayObjectAllPokemons)
-            if (pokFiltrados.length !== 0) {
-               listaPok.innerHTML = ""
-               pokFiltrados.forEach(pok => crearPokemon(pok));
-            }else{
-               listaPok.innerHTML = ""
-            }
-         }
-      }
-
-
-   })
-});
-
 function borrarClassActive() {
-   btnTipos.forEach(tipoBtn => tipoBtn.classList.remove('active'))
+   const btnHeader = document.querySelectorAll('.btn-header')
+   btnHeader.forEach(tipoBtn => tipoBtn.classList.remove('active'))
 }
 // /********************************************/
 
@@ -111,7 +141,7 @@ function crearPokemon(obj) {
          </div>
       </div>
    </div>`
-   }else{
+   } else {
       cardPok = `<div class="pokemon">
       <div class="back-detail_click"></div>
       <p class="pokemon-id-back">#${idPok}</p>
@@ -135,7 +165,7 @@ function crearPokemon(obj) {
    </div>`
    }
 
-listaPok.innerHTML +=  cardPok;
+   listaPok.innerHTML += cardPok;
 }
 /********************************************************/
 
@@ -146,9 +176,9 @@ function returnId(id) {
    let stringId = id.toString()
    if (stringId.length === 1) {
       return `00${stringId}`
-   }else if (stringId.length === 2) {
+   } else if (stringId.length === 2) {
       return `0${stringId}`
-   }else{
+   } else {
       return stringId
    }
 }

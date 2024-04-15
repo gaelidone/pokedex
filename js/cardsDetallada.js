@@ -1,8 +1,6 @@
 const blurBack = document.querySelector('.blurLarge');
 
-
-
-
+/* CREAR CARD DETALLADA */
 document.body.addEventListener('click', (e) =>{
    if (e.target && e.target.classList.contains('back-detail_click')) {
       let blur = document.querySelector('.blurLarge');
@@ -10,12 +8,11 @@ document.body.addEventListener('click', (e) =>{
       const target = e.target;
       const name = target.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.lastElementChild.textContent;
       const pokClick = devolverObj(arrayObjectAllPokemons, name)
-      console.log(pokClick)
       crearCard(pokClick)
    }
 })
 
-
+/* CERRAR CARD DETALLADA */
 document.body.addEventListener('click', (e) =>{
    if ((e.target && e.target.id === "x") || (e.target && e.target.id === "blur")) {
       const blur = document.querySelector('#blur');
@@ -26,6 +23,12 @@ document.body.addEventListener('click', (e) =>{
 })
 
 
+
+
+
+
+
+/* FUNCION PARA CREAR CARD DETALLADA */
 function crearCard(obj) {
    let namePok = (obj.name).toUpperCase();
    let idPok = returnId(obj.id);
@@ -34,9 +37,9 @@ function crearCard(obj) {
    let tiposPok = returnType(obj)
    let alturaPok = obj.height
    let pesoPok = obj.weight;
-   let textPok = allTextosDesc[(obj.id) - 1]
-   let arrayStats = cargarStats(obj.id)
-   console.log(arrayStats)
+   let textPok = allTextosDesc[(obj.id) - 1];
+   let arrayStats = cargarStats(obj.id);
+   let objStats = cargarBarras(arrayStats);
 
    document.body.innerHTML += `<div class="cardPokemon">
    <i class="bi bi-x-circle" id="x"></i>
@@ -58,7 +61,7 @@ function crearCard(obj) {
          <p class="pokemon-id">#${idPok}</p>
       </div>
       <div class="card-main__tipos">
-      <p class="${tiposPok[0]} tipo">${(tiposPok[0]).toUpperCase()}</p>
+         <p class="${tiposPok[0]} tipo">${(tiposPok[0]).toUpperCase()}</p>
       </div>
    </div>
 
@@ -70,38 +73,70 @@ function crearCard(obj) {
       </div>
    </div>
    <div class="card-section__stats">
-       <div class="container-stats">
             <div class="div-stat">
-              <p>HP</p>
-             <div class="stat-bar"></div>
+               <div class="stat-data">
+                  <p class="name-stat">HP</p>
+                  <p class="number-stat">${arrayStats[0]}/155</p>
+               </div>
+               <div class="stat-bar">
+                  <div class="${objStats[0].class}" style="width:${objStats[0].percentage}%;"></div>
+               </div>
             </div>
             <div class="div-stat">
-               <p>ATK</p>
-               <div class="stat-bar"></div>
+               <div class="stat-data">
+                  <p class="name-stat">ATK</p>
+                  <p class="number-stat">${arrayStats[1]}/155</p>
+               </div>
+               <div class="stat-bar">
+                  <div class="${objStats[1].class}" style="width:${objStats[1].percentage}%;"></div>
+               </div>
             </div>
             <div class="div-stat">
-              <p>DEF</p>
-              <div class="stat-bar"></div>            
+               <div class="stat-data">
+                  <p class="name-stat">DEF</p>
+                  <p class="number-stat">${arrayStats[2]}/155</p>
+               </div>
+               <div class="stat-bar">
+                  <div class="${objStats[2].class}" style="width:${objStats[2].percentage}%;"></div>
+               </div>            
             </div>
             <div class="div-stat">
-             <p>ATK+</p>
-             <div class="stat-bar"></div>
+               <div class="stat-data">
+                  <p class="name-stat">ATK+</p>
+                  <p class="number-stat">${arrayStats[3]}/155</p>
+               </div>
+               <div class="stat-bar">
+                  <div class="${objStats[3].class}" style="width:${objStats[3].percentage}%;"></div>
+               </div>
             </div>
             <div class="div-stat">
-               <p>DEF+</p>
-               <div class="stat-bar"></div>
+               <div class="stat-data">
+                  <p class="name-stat">DEF+</p>
+                  <p class="number-stat">${arrayStats[4]}/155</p>
+               </div>
+               <div class="stat-bar">
+                  <div class="${objStats[4].class}" style="width:${objStats[4].percentage}%;"></div>
+               </div>
             </div>
             <div class="div-stat">
-               <p>SPD</p>
-               <div class="stat-bar"></div>
+               <div class="stat-data">
+                  <p class="name-stat">SPD</p>
+                  <p class="number-stat">${arrayStats[5]}/155</p>
+               </div>
+               <div class="stat-bar">
+                  <div class="${objStats[5].class}" style="width:${objStats[5].percentage}%;"></div>
+               </div>
             </div>
 
          </div>
       </div>
-   </div>
-   
 </div>
 `
+   if (tiposPok.length > 1) {
+      const wrapTipos = document.querySelector('.card-main__tipos');
+      let tipo2 = `<p class="${tiposPok[1]} tipo">${(tiposPok[1]).toUpperCase()}</p>`
+      wrapTipos.innerHTML += tipo2;
+   }
    borderColor(tiposPok)
 }
 
@@ -116,7 +151,6 @@ function devolverObj(array, nameCard) {
 
 function borderColor(type) {
    const card = document.querySelector('.cardPokemon');
-   console.log(card)
    card.style.boxShadow = `0 0 20px 3px var(--type-${type[0]})`
 }
 
@@ -126,7 +160,7 @@ let URLtext = "https://pokeapi.co/api/v2/pokemon-species/"
 let allTextosDesc = [];
 
 async function cargarTextos() {
-   for (let i = 1; i < 10; i++) {
+   for (let i = 1; i < 11; i++) {
       let url_flavor = `${URLtext}${i}`
       let response = await fetch(url_flavor)
       let data = await response.json()
@@ -139,6 +173,8 @@ cargarTextos()
 
 /***************************************************************/
 
+
+
 /* CARGAR LAS STATS */
 function cargarStats(id) {
    const pok = arrayObjectAllPokemons[(id - 1)];
@@ -150,6 +186,27 @@ function cargarStats(id) {
    return arrayStats;
 }
 /***************************************************************/
+/* BARRAS DE PORCENTAJE STATS */
+function cargarBarras(arrayStats) {
+   const objStats = [
+      {class: "hp"},
+      {class: "atk"},
+      {class: "def"},
+      {class: "atkPlus"},
+      {class: "defPlus"},
+      {class: "spd"}
+   ]
+   const maxNum = 155;
+   for (let i = 0; i < arrayStats.length; i++) {
+      let porcentaje = (arrayStats[i] * 100) / maxNum;
+      objStats[i].percentage = porcentaje;
+   }
+   return objStats
+}
+/*****************************************************************/
+
+
+
 
 
 //    <div class="cardPokemon">
