@@ -20,6 +20,7 @@ document.body.addEventListener('click', (e) =>{
       const cardPok = document.querySelector('.cardPokemon');
       cardPok.remove()
    }
+   
 })
 
 
@@ -160,7 +161,7 @@ let URLtext = "https://pokeapi.co/api/v2/pokemon-species/"
 let allTextosDesc = [];
 
 async function cargarTextos() {
-   for (let i = 1; i < 11; i++) {
+   for (let i = 1; i < 181; i++) {
       let url_flavor = `${URLtext}${i}`
       let response = await fetch(url_flavor)
       let data = await response.json()

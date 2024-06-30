@@ -2,7 +2,7 @@ const btnTipos = document.querySelectorAll('.btn-header');
 const listaPok = document.querySelector('#listaPokemon');
 let paginaCargada = false
 
-let URL = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
+let URL = "https://pokeapi.co/api/v2/pokemon?limit=180&offset=0";
 let arrayObjectAllPokemons = [];
 
 
@@ -67,9 +67,8 @@ function manejarClickBotonesHeader(e) {
    if (e.target.classList.contains('btn-header')) {
       const idTipo = e.target.id
       let verificacion = e.target.classList.contains('active');
-      console.log(idTipo)
-      console.log(verificacion)
       if (verificacion === false) {
+         let pokemonInput = ""; input.value = "";
          borrarClassActive()
          e.target.classList.add('active')
 
@@ -194,4 +193,23 @@ function returnType(obj) {
 }
 /******************************************************/
 
+/* BUSCADOR DE POKEMONES */
+const input = document.querySelector('#search');
+let letras = "abcdefghijklmnñopqrstuvwxyz";
+let pokemonInput = "";
 
+input.addEventListener('keydown', (e) => {
+   letraClickeada = e.key;
+   if (letras.includes(letraClickeada)) {
+      pokemonInput += letraClickeada;
+   }else if (letraClickeada === "Backspace") {
+      pokemonInput = pokemonInput.slice(0, -1);
+   }
+   filtrarPokPorBusqueda(pokemonInput)
+})
+
+function filtrarPokPorBusqueda(letras){
+   listaPok.innerHTML = "";
+   const pokFiltrados = arrayObjectAllPokemons.filter(pok => pok.name.includes(letras) === true); 
+   pokFiltrados.forEach(pok => crearPokemon(pok))
+}
